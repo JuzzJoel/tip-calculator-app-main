@@ -26,19 +26,27 @@
       font-weight: 700;
     }
 
-    :root {
-      --primary: hsl(183, 100%, 15%);
-      --primary-alt: hsl(172, 67%, 45%);
+    ::root {
+  --primary: hsl(183, 100%, 15%);
+  --primary-alt: hsl(172, 67%, 45%);
+  --Grey-1000: hsl(186, 14%, 43%);
+  --Grey-800: hsl(184, 14%, 56%);
+  --Grey-400: hsl(185, 41%, 84%);
+  --Grey-100: hsl(189, 47%, 97%);
+  --White: hsl(0, 100%, 100%);
+  --fw-bold:700;
+  --ff:'Space Mono', monospace;
+  --vh: 100vh;
+  --logo-height: 0.2;
+  --calculator-height: 0.65;
+}
 
-      --Grey-1000: hsl(186, 14%, 43%);
-      --Grey-800: hsl(184, 14%, 56%);
-      --Grey-400: hsl(185, 41%, 84%);
-      --Grey-100: hsl(189, 47%, 97%);
-      --White: hsl(0, 100%, 100%);
+@supports (height: 100svh) {
+  :root {
+    --vh: 100svh;
+  }
+}
 
-      --fw-bold:700;
-      --ff:'Space Mono', monospace;
-    }
     @mixin flex-center(
       $align:center , $justify:row ,$flex:column
     ){
