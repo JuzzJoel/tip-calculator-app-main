@@ -258,8 +258,22 @@ font-size: 1rem;
      text-align: right;
       @include flex-center(end,flex-end);
     }
+    @media(min-width:1024px) and (max-width:1250px){
+      .container{
+        border-radius: 0.7rem;
+        display: flex;
+        flex-direction: column;
+      }
+    }
 
-@media(max-width:1100px){
+    @media(min-width:767px) and (max-width:1023px){
+      .container{
+        border-radius: 0.7rem;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+@media(max-width:767px){
 body{
 height: auto;
 }
