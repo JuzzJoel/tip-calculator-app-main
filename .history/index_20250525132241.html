@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+
+  <title>Frontend Mentor | Tip calculator app</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sass.js/0.10.10/sass.sync.min.js"></script>
+  <style type="text/scss" id="scss-style">
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      font-family: var(--ff);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      font-weight: 700;
+    }
+
+    :root {
+      --primary: hsl(183, 100%, 15%);
+      --primary-alt: hsl(172, 67%, 45%);
+
+      --Grey-1000: hsl(186, 14%, 43%);
+      --Grey-800: hsl(184, 14%, 56%);
+      --Grey-400: hsl(185, 41%, 84%);
+      --Grey-100: hsl(189, 47%, 97%);
+      --White: hsl(0, 100%, 100%);
+
+      --fw-bold:700;
+      --ff:'Space Mono', monospace;
+    }
+    @mixin flex-center(
+      $align:center , $justify:row ,$flex:column
+    ){
+      display: flex;
+      align-items: $align;
+      justify-content: $justify;
+      flex-direction: $flex;
+    }
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+
+    body {
+      width: 100vw;
+      height: auto;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      background: var(--Grey-400);
+      flex-direction: column;
+      @include flex-center(center,center);
+    }
+    body *, body > * , button {
+      font-weight: 700;
+    }
+    .container{
+      display: flex;
+      flex-direction: column;
+      width: 65%;
+      height: auto;
+    }
+    .logo{
+    @include flex-center(center,center);
+    background: var(--Grey-400);
+    height: 20vh;
+    }
+    .calculator{
+      @include flex-center(center,center,row);
+      border-radius: 2rem;
+      box-shadow: 0 0 .5rem 0 rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0 0 1rem rgba(0, 0, 0, 0.10));
+      height: auto;
+      overflow: hidden;
+      height: 65vh;
+      background: var(--White);
+    }
+    .calculator > *{
+width: 50%;
+    }
+    .options-container {
+      border-top-left-radius: 2rem;
+      border-bottom-left-radius: 2rem;
+    }
+    
+    .tips-container {
+      border-top-right-radius: 2rem;
+      border-bottom-right-radius: 2rem;
+    }
+    
+    .options-container , .tips-container{
+      @include flex-center(center,center);
+      height: 90%;
+    }
+    .options,.tips-display{
+      width: 90%;
+      @include flex-center(none, space-evenly);
+      height: 100%;
+    }
+    .tips-display{
+      background: var(--primary);
+      border-radius: 0.9rem;
+      @include flex-center(center,center);
+    }
+    .tips-display-container{
+      width:90%;
+      height: 90%;
+      background: inherit;
+    }
+    .tip-select{
+      @include flex-center(center,space-evenly);
+      }
+      .row{
+        height: 100%;
+        width: 100%;
+        margin: 1rem;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+  
+      }
+      .row > *{
+  width: 33%;
+  margin-bottom: 3%;
+      }
+    label{
+      font-size: 1rem;
+      color: var(--Grey-1000);
+      margin-bottom: 0.5rem;
+    }
+    button{
+      padding: .4rem 2rem;
+      font-size: 1.5rem;
+      background: var(--primary);
+      border: none;
+      color: var(--White);
+      border-radius: 0.4rem;
+      font-weight: 400;
+      text-align: center;
+      font-family: var(--ff);
+      width: 100%;
+      transition: color 0.3s ease , background 0.3s ease;
+    }
+    button.active {
+      background: var(--primary-alt);
+      color: var(--primary);
+    }
+    button:hover {
+     transform: translateY(1px);
+    }
+
+    .custom{
+background: var(--Grey-100);
+color: var(--Grey-1000);
+transition: all 0.2s ease ;
+    }
+    .custom:hover,.custom:active {
+      color: var(--primary);
+      background: var(--White);
+      border: 3px solid var(--Grey-400);
+    }
+    .reset{
+background: var(--Grey-1000);
+color: var(--primary);
+text-transform: uppercase;
+    }
+    .reset:focus{
+      background: var(--primary);
+      color: var(--primary);
+      text-transform: uppercase;
+          }
+    input{
+      background: var(--Grey-100); /*grey-50*/
+border: none;
+cursor: pointer;
+transition: all 0.3s ease-in-out;
+text-align: right;
+font-size: 1.5rem;
+color: var(--primary);
+    }
+    input:focus{
+      border: 3px solid var(--primary-alt);
+    }
+ 
+    .bill-display,.amt-of-people
+    {
+      display: flex;
+      flex-direction: column;
+    }
+    .bill-display input,
+    .amt-of-people input
+    {position: relative;
+      display: flex;
+      padding: 1rem 2rem;
+      border-radius: 0.4rem;
+      @include flex-center(center,center);
+    }
+    .bill-display input:focus,.amt-of-people input:focus
+    {outline: none;
+      caret-color: currentColor;
+    }
+    .person-icon,
+    .dollar-icon
+    {
+      position: absolute;
+transform: translate(100%,200%);
+height: 27px;
+
+    }
+    .reset-container{
+      height: 50%;
+      @include flex-center(center,end)
+    }
+    .tip-display-amount,.tip-display-total{
+@include flex-center(center,space-between,row);
+height: 25%;
+    }
+    .tip-display-amount .pointer,
+    .tip-display-total .pointer{
+      @include flex-center(center,center);
+      color: var(--White);
+    }
+    .tip-display-amount .pointer .eyebrow,
+    .tip-display-total .pointer .eyebrow{
+color: var(--Grey-400);
+font-size: 1rem;
+    }
+    .display-figures{
+      font-size: 3rem;
+      color: var(--primary-alt);
+    }
+    @media(min-width:1024px) and (max-width:1250px){
+      .container{
+        border-radius: 0.7rem;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    @media(min-width:767px) and (max-width:1023px){
+      .container{
+        border-radius: 0.7rem;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+@media(max-width:767px){
+body{
+height: auto;
+}
+  .container{
+    width: 90vw;
+    height: auto;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+.logo{
+  height: 15vh;
+}
+
+  .calculator{
+    flex-direction: column;
+height: 100vh;
+    border-radius: 1.5rem;
+  }
+ 
+  .options-container {
+  width: 100%;
+  height: 60vh;
+  }
+  .tips-container{
+    height: 30vh;
+    width: 100%;
+  }
+  .options,.tips-display{
+height: 100%;
+  }
+  .row{
+    width: 100%;
+  }
+  .row > *{
+    width: 47%;
+    margin-bottom: 5%;
+        }
+        .tips-display-container{
+          width: 90%;
+          height: 90%;
+        }
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="/images/logo.svg" alt="">
+    </div>
+    <div class="calculator">
+      <div class="options-container">
+        <div class="options">
+
+          <div class="bill-display">
+
+            <label for="bill">Bill</label>
+            <input type="text" id="bill-input" class="bill">
+            <img src="/images/icon-dollar.svg" class="dollar-icon" alt="dollar icon">
+          </div>
+          <div class="tip-select">
+            <label for=""> Select Tip %</label>
+
+            <div class="row">
+              <button value="0.05" onclick="getValue(this)">5%</button>
+              <button value="0.1" onclick="getValue(this)">10%</button>
+              <button value="0.15" onclick="getValue(this)">15%</button>
+              <button value="0.25" onclick="getValue(this)">25%</button>
+              <button value="0.5" onclick="getValue(this)">50%</button>
+              <button class="custom" onclick="getValue(this)">Custom</button>
+            </div>
+
+          </div>
+          <div class="amt-of-people">
+            <label for="people"> Number of People</label>
+            <input type="text" id="people-input" class="people">
+            <img src="/images/icon-person.svg" class="person-icon" alt="dollar icon">
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="tips-container">
+        <div class="tips-display">
+          <div class="tips-display-container">
+            <div class="tip-display-amount">
+              <div class="pointer">
+                Tip Amount
+                <span class="eyebrow">/ person</span>
+
+              </div>
+              <div class="display-figures" id="tip-amt">
+                $0.00
+              </div>
+            </div>
+
+            <div class="tip-display-total">
+
+              <div class="pointer">
+                Total
+
+                <span class="eyebrow">/ person</span>
+
+              </div>
+              <div class="display-figures" id="tip-total">
+                $0.00
+              </div>
+
+            </div>
+            <div class="reset-container">
+              <button class="reset">
+                Reset
+                </button>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">Olajire Joel</a>.
+  </div>
+</body>
+<script>
+  let customInput = document.querySelector(".custom");
+    let billInput = document.querySelector("#bill-input");
+    let peopleInput = document.querySelector(".#people-input");
+    let tipAmt = document.querySelector("#tip-amt");
+    let tipTotal = document.querySelector("#tip-total");
+
+  let buttons = document.getElementsByTagName(button);
+
+  buttons.forEach((button)   )
+
+    function getValue(button) {
+      let tip = button.value;
+
+    }
+  
+
+</script>
+<script>
+  var scssCode = document.getElementById('scss-style').innerHTML;
+  Sass.compile(scssCode, function (result) {
+    var style = document.createElement('style');
+    style.innerHTML = result.text;
+    document.head.appendChild(style);
+  });
+</script>
+
+</html>

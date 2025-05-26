@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+
+  <title>Frontend Mentor | Tip calculator app</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --Green-900: hsl(183, 100%, 15%);
+      --Green-400: hsl(172, 67%, 45%);
+
+      --Grey-500: hsl(186, 14%, 43%);
+      --Grey-400: hsl(184, 14%, 56%);
+      --Grey-200: hsl(185, 41%, 84%);
+      --Grey-50: hsl(189, 47%, 97%);
+      --White: hsl(0, 100%, 100%);
+
+    }
+
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      background: var(--Grey-200);
+    }
+    .container{
+      background: var(--White);
+      border-radius: 0.7rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .logo{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .calculator{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .calculator > *{
+      height: 90%;
+      width: 50%;
+    }
+    .options-container{
+      
+    }
+    .tips-container{
+      background: var(--Green-900);
+    }
+    label{
+      font-size: 0.8rem;
+      color: var(--Grey-500);
+    }
+    button{
+      padding: 1rem;
+    }
+    input{
+      background: var(--Grey-50); /*grey-50*/
+      border: none;
+
+    }
+    .bill-display,.amt-of-people
+    {
+      display: flex;
+      flex-direction: column;
+    }
+    .bill-display input,.amt-of-people input
+    {position: relative;
+      display: flex;
+      padding: 1rem 2rem;
+      border-radius: 0.4rem;
+    }
+    .bill-display input:focus,.amt-of-people input:focus
+    {outline: none;
+      caret-color: currentColor;
+    }
+    .person-icon,.dollar-icon
+    {
+position: absolute;
+transform: translate(70%,250%);
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="/images/logo.svg" alt="">
+    </div>
+    <div class="calculator">
+      <div class="options-container">
+        <div class="options">
+
+          <div class="bill-display">
+
+            <label for="">Bill</label>
+            <input type="text">
+            <img src="/images/icon-dollar.svg" class="dollar-icon" alt="dollar icon">
+          </div>
+          <div class="tip-select">
+            <label for=""> Select Tip %</label>
+
+        <div class="row">
+          <button>5%</button>
+          <button>10%</button>
+          <button>15%</button>
+        </div> 
+        <div class="row">
+          <button>25%</button>
+          <button>50%</button>
+          <button>Custom</button>
+        </div> 
+         
+          </div>
+       <div class="amt-of-people">
+        <label for="">     Number of People</label>
+        <input type="text">
+        <img src="/images/icon-person.svg" class="person-icon" alt="dollar icon">
+       </div>
+
+        </div>
+      </div>
+      <div class="tips-container">
+        <div class="tips-display">
+          <div class="tip-display-amount">
+            
+            Tip Amount
+            / person
+          </div>
+        
+          <div class="tip-display-total">
+            Total
+            / person Reset
+          </div>
+       
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">Olajire Joel</a>.
+  </div>
+</body>
+
+</html>
