@@ -26,27 +26,19 @@
       font-weight: 700;
     }
 
-    ::root {
-  --primary: hsl(183, 100%, 15%);
-  --primary-alt: hsl(172, 67%, 45%);
-  --Grey-1000: hsl(186, 14%, 43%);
-  --Grey-800: hsl(184, 14%, 56%);
-  --Grey-400: hsl(185, 41%, 84%);
-  --Grey-100: hsl(189, 47%, 97%);
-  --White: hsl(0, 100%, 100%);
-  --fw-bold:700;
-  --ff:'Space Mono', monospace;
-  --vh: 100vh;
-  --logo-height: 0.2;
-  --calculator-height: 0.65;
-}
+    :root {
+      --primary: hsl(183, 100%, 15%);
+      --primary-alt: hsl(172, 67%, 45%);
 
-@supports (height: 100svh) {
-  :root {
-    --vh: 100svh;
-  }
-}
+      --Grey-1000: hsl(186, 14%, 43%);
+      --Grey-800: hsl(184, 14%, 56%);
+      --Grey-400: hsl(185, 41%, 84%);
+      --Grey-100: hsl(189, 47%, 97%);
+      --White: hsl(0, 100%, 100%);
 
+      --fw-bold:700;
+      --ff:'Space Mono', monospace;
+    }
     @mixin flex-center(
       $align:center , $justify:row ,$flex:column
     ){
@@ -281,20 +273,20 @@ font-size: 1rem;
 @media(max-width:767px){
 body{
 height: auto;
-
+}
   .container{
     width: 90vw;
     height: auto;
     flex-direction: column;
     justify-content: space-between;
   }
-.logo {
-  height: calc(var(--vh) * var(--logo-height));
+.logo{
+  height: 15vh;
 }
 
   .calculator{
     flex-direction: column;
-height: calc(var(--vh) * var(--calculator-height));
+height: 100vh;
     border-radius: 1.5rem;
   }
  
