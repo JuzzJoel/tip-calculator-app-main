@@ -164,7 +164,7 @@ width: 50%;
      transform: translateY(1px);
     }
 
-    .custom{
+    .custom , .custom-input{
 background: var(--Grey-100);
 color: var(--Grey-1000);
 border: 3px solid  transparent;
@@ -187,18 +187,20 @@ text-transform: uppercase;
           }
     input{
       background: var(--Grey-100);
-border: none;
+border: 3px solid transparent;
 cursor: pointer;
 transition: all 0.3s ease-in-out;
 text-align: right;
 font-size: 1.5rem;
 color: var(--primary);
+
     }
     input:focus{
       border: 3px solid var(--primary-alt);
     }
  
-    .bill-display,.amt-of-people
+    .bill-display,
+    .amt-of-people
     {
       display: flex;
       flex-direction: column;
@@ -213,7 +215,8 @@ color: var(--primary);
       text-indent: 10rem;
       @include flex-center(center,center);
     }
-    .bill-display input:focus,.amt-of-people input:focus
+    .bill-display input:focus,
+    .amt-of-people input:focus
     {outline: none;
       caret-color: currentColor;
     }
@@ -344,7 +347,7 @@ height: 100%;
               <button value="0.15">15%</button>
               <button value="0.25">25%</button>
               <button value="0.5">50%</button>
-              <button class="custom">Custom</button>
+              <button class="custom" type="button" value="am the custom button">Custom</button>
             </div>
 
           </div>
@@ -365,32 +368,25 @@ height: 100%;
               <div class="pointer">
                 Tip Amount
                 <span class="eyebrow">/ person</span>
-
               </div>
               <div class="display-figures" id="tip-amt">
                 $0.00
               </div>
             </div>
-
             <div class="tip-display-total">
-
               <div class="pointer">
                 Total
-
                 <span class="eyebrow">/ person</span>
-
               </div>
               <div class="display-figures" id="tip-total">
                 $0.00
               </div>
-
             </div>
             <div class="reset-container">
               <button class="reset" id="reset">
                 Reset
               </button>
             </div>
-
           </div>
         </div>
       </div>
@@ -414,108 +410,114 @@ height: 100%;
   let tipTotalDisplay = document.querySelector("#tip-total");
   let resetAll = document.querySelector("#reset");
   let tipPercent = "";
-  let numRegex = /^(\d+(\.\d+)?|0(\.0+)?)$/;
-
+  let numRegex = /^\d*\.?\d*$/;
+  let positiveNumRegex = /^[1-9]\d*$/;
+  let billRegex = /^\d*\.?\d+$/;
   let buttons = document.querySelectorAll(".tip-select button");
-
-  /* create to elements to toggle */
+  let inputBox;
   let isInputBox = false;
-  let inputBox = document.createElement("input");
-  inputBox.type = "number";
-  inputBox.classList.add("custom-input");
-  let newButton = document.createElement("button");
-  newButton.textContent = "Custom";
-  newButton.classList.add("custom");
 
-  /* replace tho original with a created one for easy change to be made*/
-    customButton.parentNode.replaceChild(newButton, customButton);
-
-    const toggleInputBox = () => {
-        if (!isInputBox) {
-          newButton.parentNode.replaceChild(inputBox, newButton);
-          /* focus on creation*/
-          inputBox.focus();
-
-          isInputBox = true;
-        } else {
-          inputBox.parentNode.replaceChild(newButton, inputBox);
-          isInputBox = false;
-        }
-      };
-
-      newButton.addEventListener("click", toggleInputBox);
-      inputBox.addEventListener("click", () => {
-        if (isInputBox) {
-          toggleInputBox();
-        }
+  const toggleInputBox = () => {
+    if (!isInputBox) {
+      inputBox = document.createElement("input");
+      inputBox.className = "custom-input";
+      inputBox.type = "number";
+      customButton.parentNode.replaceChild(inputBox, customButton);
+      inputBox.focus();
+      inputBox.addEventListener("input", () => {
+        tipPercent = inputBox.value / 100;
+        calculateTip();
       });
-   
-      
-      
-    
+      inputBox.addEventListener("blur", () => {
+        toggleInputBox();
+      });
+      isInputBox = true;
+    } else {
+      inputBox.parentNode.replaceChild(customButton, inputBox);
+      isInputBox = false;
+    }
+  };
 
-  billInput.addEventListener("input", () => {
-    {
-      if (numRegex.test(billInput.value) && (billInput.value !== "0" || billInput.value === "")) {
+  customButton.addEventListener("click", toggleInputBox);
+
+
+    billInput.addEventListener("input", () => {
+      if (billRegex.test(billInput.value) && parseFloat(billInput.value) >= 0) {
         billInput.style.borderColor = "";
+      } else if (billInput.value === "") {
+        billInput.style.borderColor = ""; 
       }
       else {
         billInput.style.borderColor = "red";
       }
       calculateTip();
-    }
-  });
+    });
+  
 
-  peopleInput.addEventListener("input",  () => {
-    {
-      if (numRegex.test(peopleInput.value) && (peopleInput.value !== "0" || peopleInput.value === "")) {
-        peopleInput.style.borderColor = "";
-      }
-      else {
-        peopleInput.style.borderColor = "red";
-      }
+    peopleInput.addEventListener("input", () => {
+        const peopleValue = peopleInput.value;
+        if (positiveNumRegex.test(peopleValue) && parseInt(peopleValue) > 0) {
+          peopleInput.style.borderColor = "";
+        } else if (peopleValue === "") {
+          peopleInput.style.borderColor = ""; 
+        }
+        else {
+          peopleInput.style.borderColor = "red";
+        }
+        calculateTip();
+     });
 
-      calculateTip();
-    }
-  });
-
-
-  /* function to select a single button at any time except the 
-    custom button 
-    */
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      if (button.classList.contains("custom")) {
-        buttons.forEach((btn) => {
-          if (btn !== button) {
-            btn.classList.remove("active");
-          }
-        });
-        // Add logic to show the input box here
-      } else {
-        if (button.classList.contains("active")) {
-          button.classList.remove("active");
-          tipPercent = "";
-        } else {
-          buttons.forEach((btn) => {
-            if (btn !== button && !btn.classList.contains("custom")) {
-              btn.classList.remove("active");
+  
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          buttons.forEach(btn => {
+            if (!btn.classList.contains("custom")) {
+              btn.classList.remove('active');
             }
           });
-          inputBox.value = "";
-          button.classList.add("active");
-          tipPercent = button.value;
-        }
-      }
-      calculateTip();
-    });
-  });
-    
+
+          if (button.classList.contains("custom")) {
+            if (!isInputBox) { 
+              toggleInputBox(); 
+              if (inputBox && inputBox.value && numRegex.test(inputBox.value)) {
+                tipPercent = parseFloat(inputBox.value) / 100;
+              } else if (inputBox) {
+                inputBox.value = ""; 
+                tipPercent = "";
+              }
+            } else {
+              
+              inputBox.focus(); 
+            }
+            customButton.classList.remove('active'); 
+          } else {
+            if (isInputBox) { 
+              toggleInputBox();
+            }
+            button.classList.add("active");
+            tipPercent = parseFloat(button.value); 
+          }
+          calculateTip();
+        });
+     });
 
 
   function calculateTip() {
-    if ((billInput.value !== "" && peopleInput.value !== "" && tipPercent !== "" && peopleInput.value !== "0")) {
+    if (isInputBox && inputBox) {
+      console.log("Custom input value for calculation:", inputBox.value);
+    }
+
+    const billVal = parseFloat(billInput.value);
+    const peopleVal = parseInt(peopleInput.value);
+
+    let billIsValid = !isNaN(billVal) && billVal >= 0 && billInput.style.borderColor !== "red";
+    let peopleAreValid = !isNaN(peopleVal) && peopleVal > 0 && peopleInput.style.borderColor !== "red";
+    let tipPercentIsValid = (typeof tipPercent === 'number' && tipPercent >= 0);
+
+    if (billInput.value === "") billIsValid = true; 
+    if (peopleInput.value === "") peopleAreValid = true; 
+    if (billIsValid && peopleAreValid && tipPercentIsValid && billVal > 0 && peopleVal > 0)
+    {
       let bill = parseFloat(billInput.value);
       let people = parseFloat(peopleInput.value);
       let tip = (bill * tipPercent);
@@ -528,7 +530,19 @@ height: 100%;
       tipTotalDisplay.textContent = `$${totalPerPerson}`;
     }
     else {
+      if ((billInput.value !== "" && !billIsValid) || (peopleInput.value !== "" && !peopleAreValid)) {
 
+        tipAmtDisplay.textContent = "$0.00";
+        tipTotalDisplay.textContent = "$0.00";
+      }
+       else if (billVal === 0 && peopleVal > 0 && tipPercentIsValid) { // Edge case: $0 bill
+        tipAmtDisplay.textContent = "$0.00";
+        tipTotalDisplay.textContent = "$0.00";
+      } 
+      else if (billInput.value === "" || peopleInput.value === "") {
+        tipAmtDisplay.textContent = "$0.00";
+        tipTotalDisplay.textContent = "$0.00";
+      }
     }
     formatNumbers();
   }
@@ -544,10 +558,6 @@ height: 100%;
     });
   }
 
-
-
-
-
   resetAll.addEventListener(
     "click", () => {
       billInput.value = "";
@@ -557,7 +567,20 @@ height: 100%;
       buttons.forEach((button) => {
         button.classList.remove("active");
       })
+      tipPercent= "";
+      if(isInputBox){
+        toggleInputBox();
+      }
+      billInput.style.borderColor = "";
+      peopleInput.style.borderColor = "";
+      if
+      (inputBox){
+        inputBox.style.borderColor = "";
+      }
+
     })
+
+
 
 </script>
 
